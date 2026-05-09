@@ -2,7 +2,7 @@ import rclpy
 import json
 from rclpy.node import Node
 from std_msgs.msg import String
-import base_motor.PublisherSubscriber.publisher as pub
+from MotorPubSub.bm.base_motor.PublisherSubscriber.PublisherSubscriber import publisher as pub
 
 
 class SignalSubscriber(Node):
@@ -47,7 +47,10 @@ class SignalSubscriber(Node):
 
         if seconds >= 3:
             self.get_logger().warn('No signal received! Stopping rover.')
-            self.publisher_.publish()  # trigger stop command
+            self.publisher_.publish_data()  # trigger stop command
+            self.publisher_.destroy_node()
+            self.publisher_.shutdown()
+            self.destroy_node()
 
 
 def main(args=None):
